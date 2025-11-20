@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize";
 let sequelizeInstance: Sequelize | null = null;
+import pg from "@/app/lib/pg-loader";
 
 function getSequelize(): Sequelize {
   if (!sequelizeInstance) {
@@ -12,11 +13,12 @@ function getSequelize(): Sequelize {
     sequelizeInstance = new Sequelize(dbUrl, {
       dialect: "postgres",
       protocol: "postgres",
+      dialectModule: pg,
       logging: false,
       dialectOptions: needsSSL
         ? {
             ssl: {
-              require: true,
+              require: false,
               rejectUnauthorized: false,
             },
           }
